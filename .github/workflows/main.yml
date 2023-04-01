@@ -1,0 +1,40 @@
+name: Update Configs
+permissions: write-all
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run every 15 minutes
+    - cron: "*/30 * * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: python -m pip install --upgrade pip && pip install requests pybase64
+
+    - name: Run Python script and save output to file
+      run: python generate.py > configs
+
+    - name: Commit and push files
+      uses: EndBug/add-and-commit@v7
+      with:
+        author_name: "Github Actions" 
+        author_email: "actions@github.com"
+        message: "Update configs"
+        add: "."
+        push: "https://github.com/IRConf/sub.git"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
