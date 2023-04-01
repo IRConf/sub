@@ -1,6 +1,35 @@
 import requests
 import re
 import pybase64
+import urllib.parse
+
+def translate(text):
+  replacements = {
+      "MCI" : "همراه‌اول",
+      "MTN" : "ایرانسل",
+      "RTL" : "رایتل",
+      "MKH" : "مخابرات",
+      "HWB" : "های‌وب",
+      "AST" : "آسیاتک",
+      "SHT" : "شاتل",
+      "PRS" : "پارس‌آنلاین",
+      "MBT" : "مبین‌نت",
+      "ASK" : "اندیشه‌سبز",
+      "RSP" : "رسپینا",
+      "AFN" : "افرانت",
+      "ZTL" : "زی‌تل",
+      "PSM" : "پیشگامان",
+      "ARX" : "آراکس",
+      "SMT" : "سامانتل",
+      "FNV" : "فن‌آوا",
+      "APT" : "آپتل"
+      }
+
+  for old, new in replacements.items():
+      text = text.replace(old, new)
+
+  return text
+
 
 domains = requests.get('https://ircf.space/export.php').text
 
@@ -8,12 +37,13 @@ configs = requests.get('https://raw.githubusercontent.com/IranianCypherpunks/sub
 
 for domain in domains.splitlines():
   name = domain.split("\t\t")[1]
+  name = translate(name)
   domain = domain.split("\t\t")[0]
     
   for conf in configs.splitlines():
     if conf.startswith('vless://'):
       conf = re.sub(r"@([^:]+):", "@" + domain + ":", conf)
-      conf = re.sub(r"#(.*)$", "#" + name + " Iranian Cypherpunks", conf)
+      conf = re.sub(r"#(.*)$", "#" + urllib.parse.quote_plus(name) + " Iranian Cypherpunks", conf)
       print(conf)
     elif conf.startswith('vmess://'):
       conf = conf.replace('vmess://', '')
