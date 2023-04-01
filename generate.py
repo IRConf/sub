@@ -42,8 +42,8 @@ for domain in domains.splitlines():
     
   for conf in configs.splitlines():
     if conf.startswith('vless://'):
-      conf = re.sub(r"@([^:]+):", "@" + domain + ":", conf)
-      conf = re.sub(r"#(.*)$", "#" + urllib.parse.quote_plus(name) + " Iranian Cypherpunks", conf)
+      conf = re.sub(r"@([^:]+):", "@" + urllib.parse.quote(domain) + ":", conf)
+      conf = re.sub(r"#(.*)$", "#" + urllib.parse.quote(name + " Iranian Cypherpunks"), conf)
       print(conf)
     elif conf.startswith('vmess://'):
       conf = conf.replace('vmess://', '')
