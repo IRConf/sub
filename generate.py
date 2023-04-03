@@ -35,6 +35,8 @@ domains = requests.get('https://ircf.space/export.php').text
 
 configs = requests.get('https://raw.githubusercontent.com/IranianCypherpunks/sub/main/config').text
 
+print(configs)
+
 for domain in domains.splitlines():
   name = domain.split("\t\t")[1]
   name = translate(name)
