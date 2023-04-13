@@ -22,7 +22,8 @@ def translate(text):
       "ARX" : "آراکس",
       "SMT" : "سامانتل",
       "FNV" : "فن‌آوا",
-      "APT" : "آپتل"
+      "APT" : "آپتل",
+      "DBN" : "دیده‌بان‌نت"
       }
 
   for old, new in replacements.items():
