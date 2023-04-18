@@ -23,7 +23,8 @@ def translate(text):
       "SMT" : "سامانتل",
       "FNV" : "فن‌آوا",
       "APT" : "آپتل",
-      "DBN" : "دیده‌بان‌نت"
+      "DBN" : "دیده‌بان‌نت",
+      "SHM" : "شاتل‌موبایل"
       }
 
   for old, new in replacements.items():
