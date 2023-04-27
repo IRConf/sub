@@ -33,7 +33,39 @@ def translate(text):
   return text
 
 
+domains_fallback = """mci.ircf.space		MCI
+mcix.ircf.space		MCI
+mcic.ircf.space		MCI
+mtn.ircf.space		MTN
+mtnx.ircf.space		MTN
+mtnc.ircf.space		MTN
+mkh.ircf.space		MKH
+mkhx.ircf.space		MKH
+rtl.ircf.space		RTL
+hwb.ircf.space		HWB
+ast.ircf.space		AST
+sht.ircf.space		SHT
+prs.ircf.space		PRS
+mbt.ircf.space		MBT
+ask.ircf.space		ASK
+rsp.ircf.space		RSP
+afn.ircf.space		AFN
+ztl.ircf.space		ZTL
+psm.ircf.space		PSM
+arx.ircf.space		ARX
+smt.ircf.space		SMT
+shm.ircf.space		SHM
+fnv.ircf.space		FNV
+dbn.ircf.space		DBN
+apt.ircf.space		APT
+fnp.ircf.space		FNP
+ryn.ircf.space		RYN
+"""
+
 domains = requests.get('https://ircf.space/export.php').text
+
+if not domains:
+  domains = domains_fallback
 
 configs = requests.get('https://raw.githubusercontent.com/IranianCypherpunks/sub/main/config').text
 
