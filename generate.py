@@ -2,6 +2,7 @@ import requests
 import re
 import pybase64
 import urllib.parse
+import json
 
 def translate(text):
   replacements = {
@@ -24,7 +25,9 @@ def translate(text):
       "FNV" : "فن‌آوا",
       "APT" : "آپتل",
       "DBN" : "دیده‌بان‌نت",
-      "SHM" : "شاتل‌موبایل"
+      "SHM" : "شاتل‌موبایل",
+      "FNP" : "فناپ‌تلکام",
+      "RYN" : "رای‌نت"
       }
 
   for old, new in replacements.items():
@@ -32,8 +35,7 @@ def translate(text):
 
   return text
 
-
-domains_fallback = """mci.ircf.space		MCI
+domain_fallback = """mci.ircf.space		MCI
 mcix.ircf.space		MCI
 mcic.ircf.space		MCI
 mtn.ircf.space		MTN
@@ -65,9 +67,9 @@ ryn.ircf.space		RYN
 #domains = requests.get('https://ircf.space/export.php').text
 
 #if not domains:
-#  domains = domains_fallback
+#  domains = domain_fallback
 
-domains = domains_fallback
+domains = domain_fallback
 
 configs = requests.get('https://raw.githubusercontent.com/IranianCypherpunks/sub/main/config').text
 
@@ -77,7 +79,6 @@ for domain in domains.splitlines():
   name = domain.split("\t\t")[1]
   name = translate(name)
   domain = domain.split("\t\t")[0]
-    
   for conf in configs.splitlines():
     if conf.startswith('vless://'):
       conf = re.sub(r"@([^:]+):", "@" + urllib.parse.quote(domain) + ":", conf)
@@ -86,6 +87,7 @@ for domain in domains.splitlines():
     elif conf.startswith('vmess://'):
       conf = conf.replace('vmess://', '')
       conf = pybase64.urlsafe_b64decode(conf).decode('utf-8')
+      conf = json.dumps(json.loads(conf),separators=(',', ':'))
       conf = re.sub(r"\"add\":\"([^\"]+)\"", '"add":"' + domain + '"', conf)
       conf = re.sub(r"\"ps\":\"([^\"]+)\"", '"ps":"' + name + ' Iranian Cypherpunks"', conf)
       conf = conf.encode()
