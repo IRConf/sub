@@ -62,10 +62,12 @@ fnp.ircf.space		FNP
 ryn.ircf.space		RYN
 """
 
-domains = requests.get('https://ircf.space/export.php').text
+#domains = requests.get('https://ircf.space/export.php').text
 
-if not domains:
-  domains = domains_fallback
+#if not domains:
+#  domains = domains_fallback
+
+domains = domains_fallback
 
 configs = requests.get('https://raw.githubusercontent.com/IranianCypherpunks/sub/main/config').text
 
